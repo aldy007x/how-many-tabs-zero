@@ -29,6 +29,21 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(entry)
+    verify(entry)
+
+
+def verify(entry: str) -> None:
+    """Read back what was written and confirm it is exactly the entry.
+
+    The gate rejects anything but digits, so a stray newline or a
+    leftover from an earlier run must fail loudly here, not silently
+    reach the judge.
+    """
+    with open("/output/entry.txt", encoding="utf-8") as f:
+        written = f.read()
+    assert written == entry, f"entry.txt holds {written!r}, expected {entry!r}"
+    assert written.isdigit(), "entry.txt must hold digits only"
+    print(f"entry: {written}")
 
 
 if __name__ == "__main__":
